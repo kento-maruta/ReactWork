@@ -38,6 +38,8 @@
       this.state = {
         squares: Array(max*max-1).fill(null),
         isFirst: true,
+        black: 2,
+        white: 2,
       };
 
       //初期の石
@@ -47,13 +49,17 @@
       this.state.squares[36] = "●";
     }
 
+    //押した時
     handleClick(i) {
       const squares = this.state.squares.slice();
       if (squares[i] != null) {
         return;
       }
       squares[i] = this.state.isFirst ? "●" : "○";
-      this.setState({squares: squares, isFirst:!this.state.isFirst});
+      var black = squares.filter((value) => { return value === "●"; }).length;
+      var white = squares.filter((value) => { return value === "○"; }).length;
+
+      this.setState({squares: squares, isFirst:!this.state.isFirst, black:black, white:white});
     }
 
     renderSquare(i) {
@@ -71,7 +77,8 @@
     }
 
     render() {
-      const status = this.state.isFirst ? "Next player: ●" : "Next player: ○";
+      const num = " =>   ● : " + this.state.black + " ○ : " + this.state.white;
+      const status = (this.state.isFirst ? "Next player: ●" : "Next player: ○") + num;
       const squers = [];
 
       for (let i = 0; i < max; i++) {
