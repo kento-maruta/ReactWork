@@ -16,10 +16,20 @@
 </html>
 <script type="text/babel">
   class Square extends React.Component {
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        value: null,
+      };
+    }
+
     render() {
       return (
-        <button className="square">
-          {/* TODO */}
+        <button className="square" onClick={() =>{
+          this.setState({value: '●'})
+        }}>
+        {this.state.value}
         </button>
       );
     }
@@ -34,6 +44,22 @@
       const status = 'Next player: X';
       const max = 8;
       const squers = [];
+      const rows = [];
+
+      for (let i = 0; i < max; i++) {
+        rows.push(
+          <Square />
+        )
+      }
+
+      // 微妙だから中もループでやりたい
+      for (let i = 0; i < max; i++) {
+          squers.push(
+            <div className="board-row">
+              {rows}
+            </div>
+          )
+      }
 
       return (
         <div>
