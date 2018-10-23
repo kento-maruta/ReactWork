@@ -36,13 +36,22 @@
     constructor(props) {
       super(props);
       this.state = {
-        squares: Array(max*max).fill(null),
+        squares: Array(max*max-1).fill(null),
         isFirst: true,
       };
+
+      //初期の石
+      this.state.squares[27] = "●";
+      this.state.squares[28] = "○";
+      this.state.squares[35] = "○";
+      this.state.squares[36] = "●";
     }
 
     handleClick(i) {
       const squares = this.state.squares.slice();
+      if (squares[i] != null) {
+        return;
+      }
       squares[i] = this.state.isFirst ? "●" : "○";
       this.setState({squares: squares, isFirst:!this.state.isFirst});
     }
