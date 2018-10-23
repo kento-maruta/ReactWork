@@ -15,48 +15,60 @@
   </body>
 </html>
 <script type="text/babel">
+
+  const max = 8;
+
   class Square extends React.Component {
-
-    constructor(props) {
-      super(props);
-      this.state = {
-        value: null,
-      };
-    }
-
     render() {
       return (
-        <button className="square" onClick={() =>{
-          this.setState({value: '●'})
-        }}>
-        {this.state.value}
+        <button 
+          className="square" 
+          onClick={() => this.props.onClick()}
+        >
+        {this.props.value}
         </button>
       );
     }
   }
 
   class Board extends React.Component {
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        squares: Array(max*max).fill(null),
+        isFirst: true,
+      };
+    }
+
+    handleClick(i) {
+      const squares = this.state.squares.slice();
+      squares[i] = this.state.isFirst ? "●" : "○";
+      this.setState({squares: squares, isFirst:!this.state.isFirst});
+    }
+
     renderSquare(i) {
-      return <Square />;
+      const rows = [];
+
+      for (let r = 0; r < max; r++) {
+        rows.push(
+          <Square
+            value={this.state.squares[r+i*max]} 
+            onClick={() => this.handleClick(r+i*max)}
+          />
+        )
+      }
+      return rows;
     }
 
     render() {
-      const status = 'Next player: X';
-      const max = 8;
+      const status = this.state.isFirst ? "Next player: ●" : "Next player: ○";
       const squers = [];
-      const rows = [];
 
-      for (let i = 0; i < max; i++) {
-        rows.push(
-          <Square />
-        )
-      }
-
-      // 微妙だから中もループでやりたい
       for (let i = 0; i < max; i++) {
           squers.push(
             <div className="board-row">
-              {rows}
+              {this.renderSquare(i)}
             </div>
           )
       }
